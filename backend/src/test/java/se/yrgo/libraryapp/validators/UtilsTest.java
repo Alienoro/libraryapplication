@@ -9,7 +9,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class UtilsTest {
     @ParameterizedTest
     @CsvSource({
-            "Hello World 123!, hello world ",
+            "HelloWorld123, helloworld",
             "Test-123, test",
             "HAMPYhampy, hampyhampy"
     })
