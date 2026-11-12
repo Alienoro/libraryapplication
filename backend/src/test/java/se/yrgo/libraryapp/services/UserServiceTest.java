@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import se.yrgo.libraryapp.dao.UserDao;
 import se.yrgo.libraryapp.entities.LoginInfo;
@@ -13,7 +14,9 @@ import se.yrgo.libraryapp.services.UserService;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 
 @MockitoSettings(strictness = Strictness.STRICT_STUBS)
 public class UserServiceTest {
@@ -39,5 +42,18 @@ public class UserServiceTest {
         UserService userService = new UserService(userDao, encoder);
         assertThat(userService.validate(username,
                 password)).isEqualTo(Optional.of(id));
+    }
+    @Test
+    void registerHashesPasswordAndCallsDao() {
+        UserDao mockDao = mock(UserDao.class);
+        PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
+        UserService service = new UserService(mockDao, encoder);
+
+        when(mockDao.register(eq("testuser"), eq("Test Person"), anyString())).thenReturn(true);
+
+        boolean result = service.register("testuser", "Test Person", "plainPassword");
+
+        assertThat(result).isTrue();
+        verify(mockDao).register(eq("testuser"), eq("Test Person"), anyString());
     }
 }
