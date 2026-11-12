@@ -20,9 +20,9 @@ public class RealNameTest {
 
     @ParameterizedTest
     @CsvSource({
-            "Skit User",
-            "Penis Pojken",
-            "Bajs-Berget"
+            "Damn User",
+            "Dick Boy",
+            "Shiet User"
     })
     void testInvalidRealNamesWithBadWords(String name) {
         assertThat(RealName.validate(name)).isFalse();
