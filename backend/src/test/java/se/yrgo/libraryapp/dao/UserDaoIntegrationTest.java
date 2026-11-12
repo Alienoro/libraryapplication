@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import com.radcortez.flyway.test.annotation.H2;
+import se.yrgo.libraryapp.entities.LoginInfo;
 import se.yrgo.libraryapp.entities.User;
 import se.yrgo.libraryapp.entities.UserId;
 
@@ -38,5 +39,14 @@ public class UserDaoIntegrationTest {
         Optional<User> maybeUser = userDao.get("99999");
 
         assertThat(maybeUser).isEmpty();
+    }
+    @Test
+    void registerAndGetUser() {
+        UserDao userDao = new UserDao(ds);
+        boolean success = userDao.register("newhampususer", "Hampus User", "hampyhash");
+
+        assertThat(success).isTrue();
+        Optional<LoginInfo> loginInfo = userDao.getLoginInfo("newhampususer");
+        assertThat(loginInfo).isPresent();
     }
 }
