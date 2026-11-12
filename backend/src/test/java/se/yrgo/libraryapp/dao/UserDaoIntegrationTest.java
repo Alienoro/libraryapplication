@@ -62,4 +62,14 @@ public class UserDaoIntegrationTest {
         boolean notAvailable = userDao.isNameAvailable("brandnewhampususer");
         assertThat(notAvailable).isFalse();
     }
+    @Test
+    void IsNameNotAvailable() {
+        UserDao userDao = new UserDao(ds);
+
+        boolean firstInsert = userDao.register("upptagenhampususer", "Snälla Hampus", "hampus123");
+        assertThat(firstInsert).isTrue();
+
+        boolean secondInsert = userDao.register("upptagenhampususer", "Hampus Onda Tvilling", "ondahampus123");
+        assertThat(secondInsert).isFalse();
+    }
 }
