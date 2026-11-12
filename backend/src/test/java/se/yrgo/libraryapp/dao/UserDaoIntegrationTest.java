@@ -32,4 +32,11 @@ public class UserDaoIntegrationTest {
         assertThat(maybeUser.get().getName()).isEqualTo(username);
         assertThat(maybeUser.get().getId()).isEqualTo(userId);
     }
+    @Test
+    void getUser_notFound() {
+        UserDao userDao = new UserDao(ds);
+        Optional<User> maybeUser = userDao.get("99999");
+
+        assertThat(maybeUser).isEmpty();
+    }
 }
