@@ -49,4 +49,17 @@ public class UserDaoIntegrationTest {
         Optional<LoginInfo> loginInfo = userDao.getLoginInfo("newhampususer");
         assertThat(loginInfo).isPresent();
     }
+
+    @Test
+    void isNameAvailable() {
+        UserDao userDao = new UserDao(ds);
+
+        boolean available = userDao.isNameAvailable("brandnewhampususer");
+        assertThat(available).isTrue();
+
+        userDao.register("brandnewhampususer", "Hampus NewAccount", "hampusstarkalösenord");
+
+        boolean notAvailable = userDao.isNameAvailable("brandnewhampususer");
+        assertThat(notAvailable).isFalse();
+    }
 }
