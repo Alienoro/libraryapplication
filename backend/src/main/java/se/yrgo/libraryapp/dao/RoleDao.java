@@ -18,19 +18,21 @@ public class RoleDao {
     private DataSource ds;
 
     @Inject
-    RoleDao(DataSource ds) {
+    RoleDao(DataSource ds)
+    {
         this.ds = ds;
     }
 
     public List<Role> get(UserId userId) {
         List<Role> roles = new ArrayList<>();
+
         try (Connection conn = ds.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(
-                        "SELECT r.role FROM user_role AS ur JOIN role AS r ON ur.role_id = r.id WHERE ur.user_id = '"
-                                + userId + "'")) {
+                        "SELECT r.role FROM user_role AS ur JOIN role AS r ON ur.role_id = r.id WHERE ur.user_id = "
+                                + userId.getId())) {
             while (rs.next()) {
-                roles.add(Role.fromString(rs.getString("r.role")));
+                roles.add(Role.fromString(rs.getString("role")));
             }
 
             return roles;
